@@ -1,0 +1,12 @@
+# Render Blueprint: New > Blueprint > pick this repo.
+# Free web service. Point a free uptime checker at /healthz every 10 minutes
+# so it never goes to sleep.
+services:
+  - type: web
+    name: clapback
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true

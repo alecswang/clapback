@@ -27,6 +27,10 @@ Prompts come from one of four decks, picked with the chips on the big-screen lob
 
 A narrated how-to plays before round one. Space, the Skip button, or the first player's phone skips it. Every player gets a different character from a cast of sixteen flat party objects, printed with their color as an offset shadow. `public/guys.html` shows the whole cast.
 
+## Host it online
+
+`render.yaml` sets Clapback up as a free Render web service. On render.com choose New, then Blueprint, and pick this repo. Every push redeploys it. The free plan sleeps after 15 idle minutes, so point a free uptime checker such as UptimeRobot at `https://<your-app>.onrender.com/healthz` every 10 minutes to keep it awake.
+
 ## Test alone
 
 Open `http://localhost:3030/demo` to watch a full game play itself. The page shows the big screen next to four phones on autopilot, with a caption for each phase. The Start at buttons jump straight to round two or the last round (`/demo?round=3`).
