@@ -1,0 +1,197 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+
+/* Riso poster: cream paper, three flat inks plus black, ink shapes that
+   overlap and multiply. No glow, no gradients beyond the paper grain. */
+:root {
+  --paper: #f3ecdc;
+  --ink: #141414;
+  --red: #ff4b2b;
+  --blue: #2f5cff;
+  --yellow: #ffd23f;
+  --mute: #8b8478;
+  --line-w: 0.22rem;
+
+  --font: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --out: cubic-bezier(0.2, 1.3, 0.4, 1);
+  --snap: cubic-bezier(0.7, 0, 0.2, 1);
+
+  /* short names other pages still use */
+  --line: #141414;
+  --lemon: #ffd23f;
+  --ink-2: #ebe2cd;
+  --ink-3: #d9cfb8;
+  --text: #141414;
+  --bg: #f3ecdc;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 600;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Paper grain: a fine halftone over everything, printed in multiply. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: radial-gradient(rgba(60, 40, 10, 0.1) 0.6px, transparent 0.9px) 0 0 / 5px 5px;
+  mix-blend-mode: multiply;
+}
+
+/* The big ink shapes. Each one is a flat ink that multiplies where they cross.
+   Positions change per scene (body[data-scene]). */
+.lights { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+.lights i, .lights b { position: absolute; mix-blend-mode: multiply; transition: left 0.9s var(--out), top 0.9s var(--out), width 0.9s var(--out), height 0.9s var(--out), rotate 0.9s var(--out), border-radius 0.9s var(--out); }
+.lights i:nth-child(1) { background: var(--red); border-radius: 50%; width: 46vmax; height: 46vmax; left: -14vmax; top: -18vmax; }
+.lights i:nth-child(2) { background: var(--blue); width: 34vmax; height: 34vmax; left: 78vw; top: 62vh; rotate: 18deg; }
+.lights i:nth-child(3) { background: var(--yellow); border-radius: 50%; width: 18vmax; height: 18vmax; left: 66vw; top: 6vh; }
+.lights b { display: none; }
+
+body[data-scene="intro"] .lights i:nth-child(1), body[data-scene="howto"] .lights i:nth-child(1) { left: 30vw; top: 10vh; width: 60vmax; height: 60vmax; }
+body[data-scene="intro"] .lights i:nth-child(2) { left: -10vw; top: 55vh; rotate: -30deg; }
+body[data-scene="intro"] .lights i:nth-child(3) { left: 8vw; top: 4vh; }
+body[data-scene="write"] .lights i:nth-child(1) { left: -20vmax; top: 50vh; }
+body[data-scene="write"] .lights i:nth-child(2) { left: 74vw; top: -18vh; rotate: 40deg; }
+body[data-scene="write"] .lights i:nth-child(3) { left: 80vw; top: 70vh; width: 26vmax; height: 26vmax; }
+body[data-scene="vote"] .lights i:nth-child(1), body[data-scene="reveal"] .lights i:nth-child(1) { left: -16vmax; top: -22vmax; width: 40vmax; height: 40vmax; }
+body[data-scene="vote"] .lights i:nth-child(2), body[data-scene="reveal"] .lights i:nth-child(2) { left: 82vw; top: 70vh; }
+body[data-scene="vote"] .lights i:nth-child(3), body[data-scene="reveal"] .lights i:nth-child(3) { left: 84vw; top: -6vh; }
+body[data-scene="scores"] .lights i:nth-child(1) { left: 70vw; top: 40vh; width: 54vmax; height: 54vmax; }
+body[data-scene="scores"] .lights i:nth-child(2) { left: -12vw; top: -14vh; rotate: -12deg; }
+body[data-scene="scores"] .lights i:nth-child(3) { left: 4vw; top: 74vh; }
+body[data-scene="fvote"] .lights i:nth-child(1), body[data-scene="freveal"] .lights i:nth-child(1) { left: 84vw; top: -20vh; width: 30vmax; height: 30vmax; }
+body[data-scene="fvote"] .lights i:nth-child(2), body[data-scene="freveal"] .lights i:nth-child(2) { left: -16vw; top: 70vh; rotate: 8deg; }
+body[data-scene="fvote"] .lights i:nth-child(3), body[data-scene="freveal"] .lights i:nth-child(3) { left: 40vw; top: 82vh; }
+body[data-scene="over"] .lights i:nth-child(1) { left: 20vw; top: -30vh; width: 70vmax; height: 70vmax; }
+body[data-scene="over"] .lights i:nth-child(2) { left: 70vw; top: 50vh; width: 44vmax; height: 44vmax; rotate: 45deg; }
+body[data-scene="over"] .lights i:nth-child(3) { left: 2vw; top: 60vh; width: 30vmax; height: 30vmax; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+h1, p { margin: 0; }
+[hidden] { display: none !important; }
+
+.display {
+  font-family: var(--font);
+  font-weight: 900;
+  font-stretch: 68%;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: -0.005em;
+}
+/* Riso misprint: a second ink layer that sits a hair off register. */
+.misprint { text-shadow: 0.035em 0.03em 0 rgba(255, 75, 43, 0.9); }
+.grad { color: var(--ink); }
+.eyebrow {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.logo b, .p-logo b { color: var(--blue); margin-left: 0.1em; }
+
+/* player chip: ink dot, name. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.2em 0.75em 0.2em 0.25em;
+  background: var(--paper);
+  color: var(--ink);
+  border: 0.12em solid var(--ink);
+  border-radius: 99em;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.avatar {
+  display: inline-block;
+  flex: none;
+  width: 1.75em;
+  height: 2em;
+  line-height: 0;
+}
+.avatar svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* the guy pokes out of the top of his chip */
+.chip .avatar { margin: -0.45em 0 -0.15em -0.05em; }
+.chip .avatar svg { transform-origin: 50% 90%; animation: guy-bob 2.6s ease-in-out infinite; }
+.chip:nth-child(3n+1) .avatar svg { animation-delay: -0.9s; }
+.chip:nth-child(3n+2) .avatar svg { animation-delay: -1.7s; }
+@keyframes guy-bob { 0%, 100% { rotate: -4deg; } 50% { rotate: 4deg; translate: 0 -0.06em; } }
+
+.btn {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  border: 0.14em solid var(--ink);
+  border-radius: 0;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 900;
+  font-stretch: 70%;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  box-shadow: 0.22em 0.22em 0 var(--red);
+  transition: translate 0.1s, box-shadow 0.1s;
+}
+.btn:hover:not(:disabled) { translate: -0.06em -0.06em; box-shadow: 0.3em 0.3em 0 var(--red); }
+.btn:active:not(:disabled) { translate: 0.12em 0.12em; box-shadow: 0.08em 0.08em 0 var(--red); }
+.btn:disabled { background: var(--ink-2); color: var(--mute); border-color: var(--mute); box-shadow: none; cursor: not-allowed; }
+.btn:focus-visible, .ctl:focus-visible, .p-opt:focus-visible { outline: 0.18em solid var(--blue); outline-offset: 0.15em; }
+.btn-ghost { background: var(--paper); box-shadow: 0.22em 0.22em 0 var(--blue); }
+.btn-ghost:hover:not(:disabled) { box-shadow: 0.3em 0.3em 0 var(--blue); }
+
+.timer { display: flex; align-items: center; gap: 0.8rem; }
+.timer-num { font-weight: 900; font-stretch: 68%; font-size: 2rem; line-height: 1; min-width: 2.2ch; text-align: right; font-variant-numeric: tabular-nums; }
+.timer-track { flex: 1; min-width: 6rem; height: 0.8rem; border: 0.14rem solid var(--ink); }
+.timer-bar { display: block; height: 100%; background: var(--blue); transform-origin: left; transition: transform 0.1s linear; }
+.timer.urgent .timer-bar { background: var(--red); }
+.timer.urgent .timer-num { color: var(--red); }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  transform: translate(-50%, 1rem);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.6rem 1.1rem;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 20;
+  max-width: 90vw;
+  text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.offline-flag { display: none; position: fixed; top: 0.6rem; left: 50%; transform: translateX(-50%); background: var(--red); color: var(--paper); padding: 0.25em 0.9em; font-weight: 800; z-index: 30; }
+body.offline .offline-flag { display: block; }
+
+/* Motion: things get slapped down like posters on a wall. */
+@keyframes slap {
+  0% { opacity: 0; scale: 1.35; rotate: calc(var(--tilt, 0deg) + 6deg); }
+  60% { opacity: 1; scale: 0.97; rotate: calc(var(--tilt, 0deg) - 1deg); }
+  100% { opacity: 1; scale: 1; rotate: var(--tilt, 0deg); }
+}
+@keyframes slide-up { from { translate: 0 3rem; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+@keyframes rise { from { translate: 0 1rem; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+@keyframes pop { 0% { scale: 0; } 70% { scale: 1.15; } 100% { scale: 1; } }
+@keyframes wipe-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
+}

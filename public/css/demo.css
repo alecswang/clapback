@@ -1,0 +1,49 @@
+/* One page that shows a whole party: the big screen plus four phones. */
+html, body.demo { height: 100%; overflow: hidden; }
+body.demo { display: grid; grid-template-rows: auto minmax(0, 1fr); background-image: none; background-color: #e6dcc6; }
+
+.demo-bar { display: flex; align-items: center; gap: 1.2rem; padding: 0.55rem 1rem; border-bottom: 2px solid var(--line); background: var(--paper); }
+.demo-bar .logo { font-size: 1.3rem; white-space: nowrap; }
+.demo-caption { flex: 1; min-width: 0; font-size: 1rem; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-caption b { color: var(--red); margin-right: 0.5em; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.82em; }
+.demo-actions { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+.demo-sound { color: var(--mute); font-size: 0.8rem; font-weight: 700; margin-right: 0.4rem; }
+.ctl { background: #fff; border: 1px solid var(--ink); color: var(--ink); border-radius: 0;  padding: 0.35rem 0.8rem; font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+.ctl:hover { color: #fff; background: var(--ink); }
+
+.demo-grid { display: flex; gap: 14px; padding: 14px; min-height: 0; }
+.demo-screen { position: relative; flex: 1; min-width: 0; display: flex; }
+.demo-screen iframe { flex: 1; width: 100%; height: 100%; border: 1px solid var(--line); border-radius: 0; background: var(--paper); }
+.demo-tag {
+  position: absolute;
+  top: -8px;
+  left: 14px;
+  z-index: 2;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: 0;
+  
+  padding: 1px 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Phones render at real phone size, then shrink to fit two rows. */
+.demo-phones { display: grid; grid-template-columns: repeat(2, auto); gap: 12px; align-content: center; }
+.demo-phone { position: relative; width: calc(390px * var(--s, 0.5)); height: calc(760px * var(--s, 0.5)); border: 1px solid var(--line); border-radius: 0; overflow: hidden; background: #fff; }
+.demo-phone iframe { width: 390px; height: 760px; border: 0; transform: scale(var(--s, 0.5)); transform-origin: 0 0; }
+
+@media (max-width: 900px) {
+  html, body.demo { overflow: auto; height: auto; }
+  .demo-grid { flex-direction: column; }
+  .demo-screen iframe { height: auto; aspect-ratio: 16 / 9; flex: none; }
+  .demo-phones { grid-template-columns: repeat(4, auto); justify-content: center; }
+  .demo-sound { display: none; }
+}
+.demo-rounds { display: flex; align-items: center; gap: 0.35rem; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; white-space: nowrap; }
+.demo-rounds .ctl { text-decoration: none; }
+.demo-rounds .ctl.on { background: var(--ink); color: var(--paper); }
+.demo-bar { flex-wrap: wrap; row-gap: 0.4rem; } .demo-actions { flex-wrap: wrap; }

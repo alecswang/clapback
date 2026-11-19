@@ -1,0 +1,17 @@
+{
+  "name": "loudroom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Free phone-controlled party games for one shared screen.",
+  "scripts": {
+    "start": "node server.js",
+    "party": "node scripts/party.js",
+    "bots": "node test/bots.js",
+    "test": "node test/sim.js",
+    "voice": "node scripts/voice.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  }
+}

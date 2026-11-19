@@ -1,0 +1,334 @@
+/* ---------- big screen ----------
+   Riso poster. Cream cards with thick black outlines, offset ink shadows,
+   the winner printed in yellow. Things get slapped down, not floated in. */
+.cb { flex-direction: column; }
+.cb > * { position: relative; }
+
+.cb-title { font-size: 12rem; margin: 0.4rem 0 1rem; text-shadow: 0.035em 0.03em 0 var(--red); animation: slap 0.55s var(--out) both; --tilt: -2deg; rotate: var(--tilt); }
+.cb-title.small { font-size: 5.6rem; margin: 0.2rem 0 1.4rem; --tilt: 0deg; }
+.cb-intro { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.cb-blurb { font-size: 2.3rem; font-weight: 700; max-width: 52rem; background: var(--paper); padding: 0.3em 0.6em; border: var(--line-w) solid var(--ink); animation: slide-up 0.45s var(--out) 0.35s both; }
+
+.cb-write { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center; width: 100%; }
+.cb-write .cb-title { margin-bottom: 0; }
+.timer.big { flex-direction: column; gap: 0.8rem; }
+.timer.big .timer-num { font-size: 7rem; text-align: center; }
+.timer.big .timer-track { flex: none; width: 36rem; height: 1.2rem; background: var(--paper); border-width: var(--line-w); }
+.cb-writers { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; max-width: 62rem; margin-top: 1rem; }
+.cb-writer { font-size: 1.6rem; opacity: 0.45; animation: slap 0.35s var(--out) both; transition: opacity 0.2s, background 0.2s, rotate 0.3s var(--out); }
+.cb-writer.done { opacity: 1; background: var(--yellow); rotate: -2deg; }
+.cb-writer.done::after { content: "\2713"; font-weight: 900; margin-left: 0.15em; }
+
+/* Prompt: big condensed caps, top left, like a poster headline. */
+.cb-prompt { width: 100%; max-width: 72rem; animation: slide-up 0.5s var(--out) both; }
+.cb-prompt-text { font-size: 5rem; line-height: 0.88; text-wrap: balance; max-width: 62rem; text-shadow: 0.03em 0.025em 0 var(--red); }
+.is-reveal .cb-prompt { animation: none; }
+
+.cb-duel { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; }
+.cb-answers { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 1.6rem; align-items: start; width: 100%; max-width: 72rem; margin-top: 1.8rem; }
+.cb-side { display: flex; flex-direction: column; align-items: stretch; }
+.cb-side.s0 { --tilt: -1deg; }
+.cb-side.s1 { --tilt: 1deg; }
+
+.cb-answer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+  background: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  box-shadow: 0.6rem 0.6rem 0 var(--ink);
+  rotate: var(--tilt);
+}
+.cb-answer-text { flex: 1; display: grid; place-items: center; padding: 3.2rem 2rem 2.8rem; font-size: 3.4rem; font-weight: 800; line-height: 1; letter-spacing: -0.015em; text-align: center; text-wrap: balance; overflow-wrap: anywhere; }
+.cb-answer.short .cb-answer-text { font-size: 4.6rem; font-weight: 900; font-stretch: 80%; line-height: 0.92; }
+.cb-answer.long .cb-answer-text { font-size: 2.45rem; }
+.cb-answer.blank .cb-answer-text { color: var(--mute); font-style: italic; }
+
+/* Vote: each card gets slapped down when the announcer reads it. */
+.is-vote .cb-side:not(.in), .is-vote .cb-vs:not(.in) { visibility: hidden; }
+.is-vote .cb-side.in .cb-answer { animation: slap 0.45s var(--out) both; }
+.is-vote .cb-vs.in { animation: pop 0.35s var(--out) both; }
+
+.cb-vs { align-self: center; margin-top: 4.6rem; width: 5.2rem; height: 5.2rem; display: grid; place-items: center; border-radius: 50%; background: var(--red); color: var(--paper); font-size: 2.4rem; border: var(--line-w) solid var(--ink); }
+
+.cb-under { display: flex; align-items: center; gap: 0.6rem; min-height: 3.2rem; margin-top: 1.3rem; }
+.cb-under > * { animation: rise 0.35s var(--out) 0.35s both; }
+.cb-by { font-weight: 800; font-size: 1.2rem; }
+.cb-author { font-size: 1.6rem; }
+.cb-count { margin-left: auto; font-weight: 900; font-stretch: 68%; text-transform: uppercase; font-size: 1.7rem; animation-delay: var(--tp) !important; }
+
+/* Votes: voter chips drop onto the bottom edge of the card they picked. */
+.cb-voters { position: absolute; left: 1rem; right: 1rem; bottom: -1.2rem; display: flex; flex-wrap: wrap-reverse; justify-content: center; gap: 0.35rem; z-index: 3; }
+.cb-voter { font-size: 1.05rem; animation: cb-drop 0.4s var(--out) var(--d) both; }
+.cb-voter:nth-child(odd) { rotate: -4deg; }
+.cb-voter:nth-child(even) { rotate: 3deg; }
+@keyframes cb-drop { from { translate: 0 -6rem; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+.cb-side.lose .cb-voters { opacity: 1; }
+
+.cb-points {
+  position: absolute;
+  top: -1.8rem;
+  right: -1.2rem;
+  z-index: 4;
+  padding: 0.12em 0.4em 0.04em;
+  background: var(--blue);
+  color: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  font-weight: 900;
+  font-stretch: 68%;
+  font-size: 2.6rem;
+  --tilt: 5deg;
+  rotate: var(--tilt);
+  animation: slap 0.4s var(--out) var(--tp) both;
+}
+.cb-side.win .cb-points { background: var(--red); font-size: 3.3rem; }
+/* Winner gets printed in yellow with a red offset. Loser fades like a bad print. */
+.is-reveal .cb-side.win .cb-answer { animation: cb-win 0.45s var(--out) var(--tp) both; }
+.is-reveal .cb-side.lose .cb-answer { animation: cb-lose 0.35s var(--tp) both; }
+@keyframes cb-win {
+  0% { background: var(--paper); box-shadow: 0.6rem 0.6rem 0 var(--ink); }
+  40% { scale: 1.07; rotate: calc(var(--tilt) * 3); }
+  100% { background: var(--yellow); box-shadow: 0.8rem 0.8rem 0 var(--red); scale: 1.03; rotate: calc(var(--tilt) * 2); }
+}
+@keyframes cb-lose { to { opacity: 0.5; box-shadow: 0.3rem 0.3rem 0 var(--mute); border-color: var(--mute); } }
+
+.cb-stamp {
+  position: absolute;
+  top: -1.4rem;
+  left: 1rem;
+  z-index: 5;
+  padding: 0.15em 0.5em 0.05em;
+  background: var(--red);
+  color: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  font-size: 1.5rem;
+  --tilt: -5deg;
+  opacity: 0;
+  animation: slap 0.35s var(--out) var(--tb) forwards;
+}
+
+/* The payoff. A big red ink circle slams onto the screen, the word gets
+   printed over it in two misaligned inks, and the room shakes once. */
+.cb-banner { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; pointer-events: none; z-index: 6; }
+.cb-banner::before { content: ""; position: absolute; left: 50%; top: 50%; width: 40rem; height: 40rem; margin: -20rem 0 0 -20rem; border-radius: 50%; background: var(--red); mix-blend-mode: multiply; scale: 0; animation: cb-dot 0.4s var(--out) calc(var(--tb) + 0.1s) forwards, cb-gone 0.3s ease-in calc(var(--tb) + 4s) forwards; }
+@keyframes cb-dot { to { scale: 1; } }
+@keyframes cb-gone { to { scale: 0; } }
+.cb-band {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  rotate: -6deg;
+  opacity: 0;
+  animation: cb-band-in 0.01s calc(var(--tb) + 0.3s) forwards, cb-band-out 0.25s ease-in calc(var(--tb) + 4s) forwards;
+}
+@keyframes cb-band-in { to { opacity: 1; } }
+@keyframes cb-band-out { from { opacity: 1; } to { opacity: 0; scale: 0.6; } }
+.cb-band-word { font-size: 14rem; line-height: 0.85; color: var(--yellow); text-shadow: 0.04em 0.035em 0 var(--blue), -0.02em -0.02em 0 var(--ink); animation: cb-slam 0.4s var(--out) calc(var(--tb) + 0.3s) both; }
+.cb-band-sub { margin-top: 1rem; padding: 0.3em 0.8em 0.2em; background: var(--ink); color: var(--paper); font-weight: 900; font-stretch: 68%; font-size: 2.2rem; text-transform: uppercase; animation: rise 0.3s var(--out) calc(var(--tb) + 0.6s) both; }
+@keyframes cb-slam { 0% { scale: 3; opacity: 0; } 60% { scale: 0.92; opacity: 1; } 100% { scale: 1; opacity: 1; } }
+.cb-duel.knock, .cb-final.knock { animation: cb-shake 0.35s calc(var(--tb) + 0.35s) both; }
+@keyframes cb-shake {
+  0%, 100% { translate: 0 0; }
+  20% { translate: -0.8rem 0.4rem; }
+  40% { translate: 0.7rem -0.5rem; }
+  60% { translate: -0.4rem -0.2rem; }
+  80% { translate: 0.2rem 0.2rem; }
+}
+
+.cb-verdict { font-size: 4rem; background: var(--ink); color: var(--paper); padding: 0.1em 0.4em 0.02em; --tilt: -2deg; animation: slap 0.4s var(--out) var(--tp, 0.4s) both; }
+.cb-final > .cb-verdict { animation-delay: 0.4s; }
+.cb-foot { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 44rem; min-height: 3rem; margin-top: 1.4rem; }
+.cb-foot .timer { flex: 1; }
+
+/* Scoreboard: printed bars, one ink per player. */
+.cb-scores { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.cb-board { width: 100%; max-width: 60rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.cb-row {
+  display: grid;
+  grid-template-columns: 3rem 13rem minmax(0, 1fr) 7.5rem 5.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  animation: slide-up 0.45s var(--out) calc(var(--i) * 0.08s) both;
+}
+.cb-row:first-child { background: var(--yellow); box-shadow: 0.5rem 0.5rem 0 var(--red); }
+.cb-rank { font-weight: 900; font-stretch: 68%; font-size: 2.4rem; }
+.cb-row-who { display: flex; align-items: center; gap: 0.55rem; min-width: 0; font-size: 1.6rem; }
+.cb-row-name { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cb-row-bar { height: 1.4rem; border: 0.14rem solid var(--ink); background: var(--paper); }
+.cb-row-bar span { display: block; height: 100%; background: var(--c); mix-blend-mode: multiply; transform-origin: left; animation: cb-grow 0.8s var(--out) calc(var(--i) * 0.08s + 0.3s) both; }
+@keyframes cb-grow { from { transform: scaleX(0); } }
+.cb-row-score { font-weight: 900; font-stretch: 68%; font-size: 2.6rem; text-align: right; font-variant-numeric: tabular-nums; }
+.cb-row-delta { justify-self: start; font-weight: 900; font-size: 1.1rem; color: var(--blue); }
+.cb-row-delta:empty { display: none; }
+.cb-board:has(.cb-row:nth-child(8)) .cb-row { padding-block: 0.2rem; }
+.cb-board:has(.cb-row:nth-child(8)) { gap: 0.4rem; }
+
+.cb-final { display: flex; flex-direction: column; align-items: center; gap: 1.6rem; width: 100%; }
+.cb-final .cb-prompt-text { font-size: 3.8rem; }
+.cb-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; width: 100%; max-width: 72rem; }
+.cb-grid.n3, .cb-grid.n5, .cb-grid.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cb-grid.n7, .cb-grid.n8 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cb-grid.n9, .cb-grid.n10 { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: 74rem; gap: 0.9rem; }
+.cb-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 5.4rem;
+  padding: 0.9rem 1rem;
+  background: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  box-shadow: 0.4rem 0.4rem 0 var(--ink);
+  rotate: var(--tilt);
+  animation: slap 0.4s var(--out) calc(var(--i) * 0.1s + 0.3s) both;
+}
+.cb-tile:nth-child(odd) { --tilt: -0.8deg; }
+.cb-tile:nth-child(even) { --tilt: 0.8deg; }
+.cb-tile-n { flex: none; align-self: flex-start; width: 2.2rem; height: 2.2rem; display: grid; place-items: center; border-radius: 50%; background: var(--blue); color: var(--paper); font-weight: 900; font-size: 1.2rem; }
+.cb-tile-text { font-size: 1.7rem; font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.cb-grid.n7 .cb-tile-text, .cb-grid.n8 .cb-tile-text { font-size: 1.35rem; }
+.cb-grid.n9 .cb-tile-text, .cb-grid.n10 .cb-tile-text { font-size: 1.2rem; }
+.cb-grid.n9 .cb-tile, .cb-grid.n10 .cb-tile { padding: 0.8rem; gap: 0.5rem; }
+.cb-grid.n9 .cb-tile.stamped, .cb-grid.n10 .cb-tile.stamped { padding-top: 1.8rem; }
+.is-reveal .cb-tile { flex-direction: column; align-items: stretch; justify-content: space-between; }
+.cb-tile.win { background: var(--yellow); box-shadow: 0.5rem 0.5rem 0 var(--red); }
+.cb-tile.stamped { padding-top: 2rem; }
+.cb-tile-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.3rem 0.6rem; padding-top: 0.6rem; border-top: 0.14rem solid var(--ink); font-size: 0.95rem; }
+.cb-tile-points { font-weight: 900; font-stretch: 68%; font-size: 1.9rem; }
+.cb-tile .cb-stamp { top: -1.3rem; left: 0.8rem; font-size: 1.2rem; animation-delay: calc(var(--tb) + 4.3s); }
+
+.cb-over { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%; }
+.cb-over > :not(.cb-confetti) { position: relative; z-index: 1; }
+.cb-winner { font-size: 11rem; color: var(--ink); text-align: center; margin: 0 0 1.6rem; text-shadow: 0.04em 0.035em 0 var(--red), 0.08em 0.07em 0 var(--yellow); --tilt: -3deg; rotate: var(--tilt); animation: slap 0.6s var(--out) 0.15s both; }
+.cb-champs { display: flex; gap: 1rem; margin-bottom: -1rem; }
+.cb-champ { font-size: 5.5rem; animation: slap 0.5s var(--out) 0.5s both; }
+.cb-champ svg { transform-origin: 50% 95%; animation: guy-dance 0.55s ease-in-out 1.1s infinite alternate; }
+@keyframes guy-dance { from { rotate: -9deg; translate: 0 0; } to { rotate: 9deg; translate: 0 -0.12em; } }
+.cb-winner.duo { font-size: 6rem; }
+.cb-over .cb-board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 62rem; gap: 0.55rem 1.2rem; }
+.cb-over .cb-board:has(.cb-row:only-child), .cb-over .cb-board:not(:has(.cb-row:nth-child(5))) { grid-template-columns: 1fr; max-width: 36rem; }
+.cb-over .cb-row { grid-template-columns: 3rem minmax(0, 1fr) auto; }
+.cb-over .cb-row-bar, .cb-over .cb-row-delta { display: none; }
+.cb-over-btns { display: flex; gap: 1.2rem; margin-top: 1.8rem; position: relative; z-index: 2; }
+/* Confetti is paper scraps in the three inks. */
+.cb-confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.cb-confetti i { position: absolute; top: -2rem; width: 1.1rem; height: 1.6rem; background: currentColor; mix-blend-mode: multiply; scale: var(--s); animation: cb-fall linear 2 both; }
+.cb-confetti i:nth-child(3n) { border-radius: 50%; width: 1.3rem; height: 1.3rem; }
+@keyframes cb-fall {
+  from { transform: translateY(-2rem) rotate(var(--r)); }
+  to { transform: translateY(110vh) rotate(calc(var(--r) + 360deg)); }
+}
+
+/* ---------- phones ---------- */
+.p-stack { display: flex; flex-direction: column; gap: 1rem; animation: slide-up 0.4s var(--out) both; }
+.p-prompt { font-weight: 900; font-stretch: 68%; text-transform: uppercase; font-size: 2.2rem; line-height: 0.9; text-shadow: 0.03em 0.025em 0 var(--red); }
+.p-prompt.small { font-size: 1.7rem; }
+.p-inputwrap { position: relative; }
+.p-input {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 0.9rem 1rem 2rem;
+  border: 0.16rem solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0.3rem 0.3rem 0 var(--blue);
+  resize: none;
+  outline: none;
+}
+.p-input:focus { box-shadow: 0.3rem 0.3rem 0 var(--red); }
+.p-count { position: absolute; right: 0.9rem; bottom: 0.6rem; color: var(--mute); font-weight: 800; font-size: 0.9rem; }
+html.play .p-choice {
+  min-height: 5.4rem;
+  font-family: var(--font);
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-stretch: 100%;
+  line-height: 1.12;
+  text-transform: none;
+  overflow-wrap: anywhere;
+  background: var(--paper);
+}
+.p-choice.c0 { box-shadow: 0.22em 0.22em 0 var(--red); rotate: -1deg; }
+.p-choice.c1 { box-shadow: 0.22em 0.22em 0 var(--blue); rotate: 1deg; }
+html.play .p-choice:hover:not(:disabled) { background: var(--yellow); }
+html.play .p-choice:disabled { opacity: 0.5; }
+.p-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  text-align: left;
+  background: var(--paper);
+  color: var(--ink);
+  border: 0.16rem solid var(--ink);
+  padding: 0.7rem 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.p-opt.on { background: var(--yellow); box-shadow: 0.25rem 0.25rem 0 var(--red); }
+.p-opt.own { opacity: 0.4; }
+.p-opt-n { flex: none; width: 1.8rem; height: 1.8rem; display: grid; place-items: center; border-radius: 50%; background: var(--blue); color: var(--paper); font-weight: 900; font-size: 1rem; }
+.p-opt-text { overflow-wrap: anywhere; }
+.p-opt-own { margin-left: auto; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+.p-tag { align-self: center; padding: 0.15em 0.6em 0.05em; background: var(--red); color: var(--paper); border: 0.16rem solid var(--ink); font-size: 1.8rem; --tilt: -4deg; animation: slap 0.4s var(--out) both; }
+
+/* ---------- lights down ----------
+   During a game the big screen goes dark so the cream cards are the brightest
+   thing in the room. The ink shapes stay, dimmed, and stop multiplying. */
+html.host body.in-game { --bgc: #1b1a17; background: var(--bgc); color: var(--paper); transition: background 0.6s; }
+html.host body.in-game::after { background: radial-gradient(rgba(255, 245, 220, 0.05) 0.6px, transparent 0.9px) 0 0 / 5px 5px; mix-blend-mode: normal; }
+html.host body.in-game .lights i { mix-blend-mode: normal; opacity: 0.16; }
+body.in-game .top-join-code { background: var(--paper); color: var(--ink); }
+body.in-game .timer-track { border-color: var(--paper); }
+body.in-game .cb-title, body.in-game .cb-prompt-text, body.in-game .cb-winner { color: var(--paper); }
+body.in-game .cb-verdict, body.in-game .cb-band-sub { background: var(--paper); color: var(--ink); }
+body.in-game .cb-by, body.in-game .cb-count { color: var(--paper); }
+/* cards: colored offset shadows read on dark, black ones don't */
+body.in-game .cb-side.s0 .cb-answer { box-shadow: 0.6rem 0.6rem 0 var(--red); }
+body.in-game .cb-side.s1 .cb-answer { box-shadow: 0.6rem 0.6rem 0 var(--blue); }
+body.in-game .cb-tile, body.in-game .cb-row { box-shadow: 0.4rem 0.4rem 0 var(--blue); }
+body.in-game .cb-row:first-child, body.in-game .cb-tile.win { box-shadow: 0.5rem 0.5rem 0 var(--red); }
+body.in-game .cb-row-bar { border-color: var(--ink); }
+body.in-game .cb-row-bar span { mix-blend-mode: normal; }
+body.in-game .cb-banner::before, body.in-game .cb-confetti i { mix-blend-mode: normal; }
+@keyframes cb-lose-dark { to { opacity: 0.35; box-shadow: 0.3rem 0.3rem 0 #4a463e; } }
+body.in-game .is-reveal .cb-side.lose .cb-answer { animation-name: cb-lose-dark; }
+/* anything printed on cream keeps black ink */
+body.in-game .logo, body.in-game .cb-answer, body.in-game .cb-tile, body.in-game .cb-row,
+body.in-game .cb-blurb, body.in-game .chip, body.in-game .ctl, body.in-game .btn { color: var(--ink); }
+body.in-game .ctl:hover { color: var(--paper); }
+body.in-game .cb-answer.blank .cb-answer-text { color: var(--mute); }
+
+/* ---------- how to play ---------- */
+.cb-howto { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.cb-ht-slides { display: grid; width: 100%; max-width: 64rem; }
+.cb-ht-slide { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.4rem; min-height: 30rem; text-align: center; opacity: 0; visibility: hidden; }
+.cb-ht-slide.on { opacity: 1; visibility: visible; animation: slide-up 0.45s var(--out) both; }
+.cb-ht-slide.on > :first-child { animation: slap 0.5s var(--out) 0.1s both; }
+.cb-ht-text { font-size: 2.5rem; font-weight: 800; line-height: 1.15; max-width: 52rem; text-wrap: balance; }
+.cb-ht-skip { margin-top: 1.2rem; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; }
+.cb-mini { background: var(--paper); color: var(--ink); border: var(--line-w) solid var(--ink); padding: 1rem 1.4rem; font-weight: 800; font-size: 1.8rem; }
+.cb-mini.q { font-weight: 900; font-stretch: 68%; text-transform: uppercase; font-size: 2.2rem; line-height: 0.95; box-shadow: 0.5rem 0.5rem 0 var(--blue); }
+.cb-mini.field { color: var(--mute); font-size: 1.5rem; }
+.cb-mini.a { min-width: 16rem; min-height: 8rem; display: grid; place-items: center; }
+.cb-mini.a:first-child { box-shadow: 0.5rem 0.5rem 0 var(--red); rotate: -2deg; }
+.cb-mini.a:last-child { box-shadow: 0.5rem 0.5rem 0 var(--blue); rotate: 2deg; }
+.cb-mini.win { background: var(--yellow); box-shadow: 0.6rem 0.6rem 0 var(--red); rotate: -2deg; }
+.cb-ht-phone { display: flex; flex-direction: column; gap: 0.8rem; width: 22rem; padding: 1.4rem 1.2rem 2.4rem; border: 0.35rem solid var(--paper); border-radius: 2.4rem; }
+.cb-ht-duel { display: flex; align-items: center; gap: 1.6rem; }
+.cb-ht-duel .cb-vs { margin: 0; }
+.cb-ht-stamp { padding: 0.15em 0.5em 0.05em; background: var(--red); color: var(--paper); border: var(--line-w) solid var(--ink); font-size: 3rem; rotate: -6deg; }
+.cb-ht-rounds { display: flex; gap: 1.4rem; }
+.cb-ht-rounds b { display: grid; place-items: center; width: 8rem; height: 8rem; border-radius: 50%; background: var(--paper); color: var(--ink); font-size: 3.6rem; }
+.cb-ht-rounds b:nth-child(2) { background: var(--yellow); }
+.cb-ht-rounds b:nth-child(3) { background: var(--red); color: var(--paper); font-size: 3rem; }

@@ -1,0 +1,103 @@
+/* The big screen is laid out on a 77 x 44 rem canvas that scales with the window. */
+html.host { font-size: clamp(9px, min(1.3vw, 2.27vh), 36px); }
+html.host, html.host body { height: 100%; overflow: hidden; }
+html.host .eyebrow { font-size: 1rem; }
+
+html.host #app { height: 100vh; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+
+.top { display: flex; align-items: center; justify-content: space-between; height: 4.2rem; padding: 1.4rem 2.6rem 0; }
+.logo { font-size: 2rem; background: var(--paper); border: var(--line-w) solid var(--ink); padding: 0.18em 0.35em 0.08em; }
+.top-join { display: flex; align-items: center; gap: 0.9rem; visibility: hidden; }
+body.in-game .top-join { visibility: visible; }
+.top-join-url { font-weight: 700; font-size: 1.05rem; }
+.top-join-code { font-size: 1.6rem; letter-spacing: 0.12em; padding: 0.15em 0.5em 0.1em; background: var(--ink); color: var(--paper); }
+
+.stage { position: relative; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 1rem 3rem 3.4rem; }
+
+.ctls { position: fixed; right: 1.2rem; bottom: 0.9rem; display: flex; gap: 0.4rem; opacity: 0.4; transition: opacity 0.2s; z-index: 10; }
+.ctls:hover, .ctls:focus-within { opacity: 1; }
+.ctl { background: var(--paper); border: 0.1rem solid var(--ink); color: var(--ink); border-radius: 0; padding: 0.3rem 0.75rem; font-size: 0.85rem; font-weight: 700; }
+.ctl:hover { background: var(--ink); color: var(--paper); }
+
+/* lobby */
+.lobby { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 3.5rem; align-items: center; width: 100%; max-width: 74rem; padding: 0 1rem 3rem; }
+.lobby-join { animation: slide-up 0.6s var(--out) both; }
+.lobby-join .eyebrow { margin-bottom: 0.6rem; display: block; }
+.join-url {
+  font-size: min(4.6rem, calc(60rem / var(--len, 17)));
+  text-transform: none;
+  line-height: 1;
+  margin-bottom: 2.4rem;
+  white-space: nowrap;
+}
+.join-row { display: flex; align-items: flex-end; gap: 2rem; }
+.code-tiles { display: flex; gap: 0.6rem; padding-top: 0.4rem; }
+.code-tile {
+  flex: none;
+  width: 5.6rem;
+  height: 7.2rem;
+  display: grid;
+  place-items: center;
+  font-size: 6rem;
+  background: var(--paper);
+  border: var(--line-w) solid var(--ink);
+  box-shadow: 0.45rem 0.45rem 0 var(--blue);
+  animation: slap 0.45s var(--out) both;
+}
+.code-tile:nth-child(1) { --tilt: -3deg; background: var(--yellow); }
+.code-tile:nth-child(2) { --tilt: 2deg; animation-delay: 0.07s; }
+.code-tile:nth-child(3) { --tilt: -1.5deg; animation-delay: 0.14s; }
+.code-tile:nth-child(4) { --tilt: 3deg; animation-delay: 0.21s; background: var(--red); color: var(--paper); }
+.qr { flex: none; width: 8.8rem; height: 8.8rem; background: #fff; padding: 0.5rem; border: var(--line-w) solid var(--ink); rotate: 3deg; }
+.qr svg { display: block; width: 100%; height: 100%; }
+
+.panel { background: var(--paper); border: var(--line-w) solid var(--ink); padding: 1.2rem 1.4rem 1.5rem; box-shadow: 0.5rem 0.5rem 0 var(--yellow); animation: slide-up 0.6s var(--out) 0.1s both; }
+.panel-head { margin-bottom: 1rem; }
+.roster { display: flex; flex-wrap: wrap; gap: 0.6rem; align-content: flex-start; min-height: 6.4rem; }
+.roster:empty { display: none; }
+.roster-empty { min-height: 6.4rem; color: var(--mute); font-size: 1.3rem; display: grid; place-items: center; }
+.roster-chip { position: relative; font-size: 1.45rem; animation: slap 0.4s var(--out) both; }
+.roster-chip:nth-child(odd) { --tilt: -2deg; }
+.roster-chip:nth-child(even) { --tilt: 1.5deg; }
+.roster-chip.away { opacity: 0.4; }
+.roster-chip.vip { background: var(--yellow); }
+.chip-x {
+  display: none;
+  position: absolute;
+  top: -0.6em;
+  right: -0.5em;
+  width: 1.35em;
+  height: 1.35em;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.8em;
+  line-height: 1;
+  place-items: center;
+}
+.roster-chip:hover .chip-x { display: grid; }
+
+.game-card { position: relative; margin-top: 1.6rem; background: var(--blue); color: var(--paper); padding: 1.4rem 1.6rem 1.6rem; border: var(--line-w) solid var(--ink); box-shadow: 0.5rem 0.5rem 0 var(--red); rotate: -1deg; animation: slide-up 0.6s var(--out) 0.2s both; }
+.game-name { font-size: 6.4rem; margin: 0.1rem 0 0.4rem; text-shadow: 0.04em 0.035em 0 var(--red); }
+.game-tag { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.3rem; max-width: 30rem; }
+.game-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.btn-start { font-size: 1.9rem; }
+
+.bye-card { text-align: center; display: grid; gap: 2rem; justify-items: center; }
+.bye-card h1 { font-size: 4rem; }
+.deck-pick { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.3rem; }
+.deck-label { font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-right: 0.3rem; }
+.deck-chip { border: 0.12rem solid var(--paper); background: transparent; color: var(--paper); padding: 0.4em 0.85em; font-size: 1.05rem; font-weight: 800; text-transform: uppercase; }
+.deck-chip:hover { background: rgba(243, 236, 220, 0.15); }
+.deck-chip.on { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+.deck-blurb { margin-top: 0.7rem; font-size: 1.05rem; font-weight: 600; opacity: 0.9; }
+/* keep the game card on screen now that it carries the deck picker */
+.game-card { padding: 1.2rem 1.5rem 1.3rem; }
+.game-name { font-size: 5.4rem; }
+.game-tag { margin-bottom: 1rem; }
+.deck-pick { flex-wrap: nowrap; gap: 0.4rem; margin-top: 1rem; }
+.deck-label { font-size: 0.85rem; }
+.deck-chip { font-size: 0.9rem; padding: 0.35em 0.7em; white-space: nowrap; }
+.deck-blurb { margin-top: 0.5rem; font-size: 0.95rem; }

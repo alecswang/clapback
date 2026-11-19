@@ -1,0 +1,57 @@
+html.play { font-size: 16px; }
+html.play body { min-height: 100dvh; }
+html.play #app {
+  max-width: 28rem;
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: calc(env(safe-area-inset-top) + 0.8rem) 1.2rem calc(env(safe-area-inset-bottom) + 1.2rem);
+}
+
+.p-top { display: flex; align-items: center; justify-content: space-between; min-height: 2.8rem; }
+.p-score, .p-roomcode { font-size: 1.7rem; background: var(--ink); color: var(--paper); padding: 0.1em 0.4em 0.05em; }
+.p-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 1rem 0; }
+
+.p-form { display: flex; flex-direction: column; gap: 0.4rem; animation: slide-up 0.45s var(--out) both; }
+.p-logo { font-size: 4.6rem; margin-bottom: 1.4rem; text-shadow: 0.04em 0.035em 0 var(--yellow); }
+.p-form label { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.p-field {
+  width: 100%;
+  font: inherit;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 0.8rem;
+  border: 0.16rem solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  box-shadow: 0.25rem 0.25rem 0 var(--blue);
+}
+.p-field:focus { box-shadow: 0.25rem 0.25rem 0 var(--red); }
+.p-field::placeholder, .p-input::placeholder { color: #b3aa98; }
+.p-code { font-weight: 900; font-stretch: 68%; font-size: 2.8rem; letter-spacing: 0.3em; text-align: center; padding-left: calc(0.9rem + 0.3em); }
+.p-error { min-height: 1.4em; color: var(--red); font-weight: 800; }
+
+html.play .btn { display: block; width: 100%; font-size: 1.7rem; padding: 0.8em 1em; }
+
+.p-wait { display: flex; flex-direction: column; gap: 0.9rem; text-align: center; align-items: center; animation: slide-up 0.4s var(--out) both; }
+.p-wait h1 { font-size: 3.6rem; overflow-wrap: anywhere; text-shadow: 0.04em 0.035em 0 var(--red); }
+.p-wait p { font-size: 1.1rem; overflow-wrap: anywhere; }
+.p-wait .btn { margin-top: 0.6rem; }
+.p-wait .p-big { font-size: 6.4rem; color: var(--blue); text-shadow: 0.04em 0.035em 0 var(--yellow); }
+.p-link { background: none; border: none; color: var(--ink); font-weight: 700; text-decoration: underline; padding: 0.8rem; margin-top: 0.4rem; }
+.p-guy { font-size: 5.5rem; margin: 0.2rem 0 0.4rem; animation: slap 0.45s var(--out) 0.15s both; }
+.p-guy svg { transform-origin: 50% 95%; animation: guy-bob 2.2s ease-in-out infinite; }
+
+/* Lights down on phones too: near-black screen, cream cards and fields stay
+   the brightest thing, ink shapes dimmed. */
+html.play body { background: #1b1a17; color: var(--paper); }
+html.play body::after { background: radial-gradient(rgba(255, 245, 220, 0.05) 0.6px, transparent 0.9px) 0 0 / 5px 5px; mix-blend-mode: normal; }
+html.play .lights i { mix-blend-mode: normal; opacity: 0.16; }
+html.play .p-score, html.play .p-roomcode { background: var(--paper); color: var(--ink); }
+html.play .p-link { color: var(--paper); }
+html.play .p-guy { --limb: var(--paper); }
+html.play .btn:disabled { background: #2c2a25; color: #8b8478; border-color: #4a463e; }

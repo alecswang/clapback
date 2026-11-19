@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Clapback · Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%232f5cff' stroke='%23141414' stroke-width='3'/%3E%3Cpath d='M21.5 10.5A7.5 7.5 0 1 0 21.5 21.5' fill='none' stroke='%23f3ecdc' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/demo.css">
+</head>
+<body class="demo">
+<header class="demo-bar">
+  <div class="logo display">Clap<b>back</b></div>
+  <div class="demo-caption" id="caption">Opening a room.</div>
+  <div class="demo-actions">
+    <span class="demo-sound" id="sound">Click anywhere for sound and voice</span>
+    <span class="demo-rounds" id="rounds">Start at
+      <a class="ctl" href="/demo?round=1" data-r="1">Round 1</a>
+      <a class="ctl" href="/demo?round=2" data-r="2">Round 2</a>
+      <a class="ctl" href="/demo?round=3" data-r="3">Pile-On</a>
+    </span>
+    <button class="ctl" id="restart">Restart demo</button>
+    <a class="ctl" href="/host" target="_blank" rel="noopener">Host a real game</a>
+  </div>
+</header>
+<main class="demo-grid">
+  <section class="demo-screen">
+    <div class="demo-tag">Big screen</div>
+    <iframe id="host" title="Big screen"></iframe>
+  </section>
+  <section class="demo-phones" id="phones"></section>
+</main>
+<script type="module" src="/js/demo.js"></script>
+</body>
+</html>
